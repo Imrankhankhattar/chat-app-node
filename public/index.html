@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat App</title>
+</head>
+
+<body>
+    <p>Lorem ipsum dolor sit amet, reprehenderit iusto?</p>
+    <script src="/socket.io/socket.io.js"></script>
+    <script type="text/javascript">
+        let socket = io();
+        socket.on('connect', function() {
+            console.log('Connected to server');
+        });
+        socket.on('disconnect', function() {
+            console.log('Disconnected to server');
+        });
+    </script>
+</body>
+
+</html>
