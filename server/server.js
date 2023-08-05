@@ -19,6 +19,10 @@ io.on('connection', (socket) => {
 
   socket.on('chat message', (message) => {
     console.log('Received message:', message);
+    socket.emit('message',{
+        from: 'Admin',
+        text: 'Welcome to the chat app'
+    })
     socket.broadcast.emit('chat message', message);
   })
 
