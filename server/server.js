@@ -14,24 +14,32 @@ const io = socket(server);
 
 
 
-io.on('connection', (socket) => {
-    socket.on('chat message', (message, callback) => {
-        socket.emit('message', generateMessage('Admin','Welcome to the chat app'))
-        socket.broadcast.emit('message', {
-            'test': ' a new user connected'
-        })
-        if (typeof callback === 'function'){
-            callback('This is from the server')
-        }
-    })
 
+io.on('connection', (socket) => {
+    // Notify all other users when a new user connects
+    socket.broadcast.emit('message', {
+      'test': 'A new user connected'
+    });
+    // welcome user
+    socket.emit('message', generateMessage({
+        from: 'Admin',
+        text: 'Welcome!'
+    }))
+    socket.on('chat message', (message) => {
+      // Broadcast the message to all other users except the sender
+      socket.broadcast.emit('message', generateMessage(message));
+    });
+  
     socket.on('disconnect', () => {
-        socket.broadcast.emit('message', {
-            'test': ' a user disconnected'
-        })
-    })
-})
+      // Notify all other users when a user disconnects
+      socket.broadcast.emit('message', {
+        'test': 'A user disconnected'
+      });
+    });
+  });
+  
 
 server.listen(port, () => {
     console.log(`Server running on port ${port}`);
 });
+
