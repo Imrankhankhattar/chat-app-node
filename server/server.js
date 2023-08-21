@@ -12,32 +12,38 @@ const server = http.createServer(app);
 const io = socket(server);
 
 
-
-
-
 io.on('connection', (socket) => {
     // Notify all other users when a new user connects
-    socket.broadcast.emit('message', {
-      'test': 'A new user connected'
-    });
+    socket.broadcast.emit('message', generateMessage({
+        text: 'A new user connected',
+        from: 'Admin'
+    }));
     // welcome user
     socket.emit('message', generateMessage({
         from: 'Admin',
         text: 'Welcome!'
     }))
     socket.on('chat message', (message) => {
-      // Broadcast the message to all other users except the sender
-      socket.broadcast.emit('message', generateMessage(message));
+        // Broadcast the message to all other users except the sender
+        socket.broadcast.emit('message', generateMessage(message));
     });
-  
+    socket.on('location', (message) => {
+        // Broadcast the message to all other users except the sender
+        try {
+            socket.broadcast.emit('location', generateMessage(message));
+        } catch (error) {
+            console.log(error)
+        }
+    });
+
     socket.on('disconnect', () => {
-      // Notify all other users when a user disconnects
-      socket.broadcast.emit('message', {
-        'test': 'A user disconnected'
-      });
+        // Notify all other users when a user disconnects
+        socket.broadcast.emit('message', {
+            'test': 'A user disconnected'
+        });
     });
-  });
-  
+});
+
 
 server.listen(port, () => {
     console.log(`Server running on port ${port}`);
