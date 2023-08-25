@@ -2,56 +2,47 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Chat App</title>
-  <link rel="stylesheet" href="/css/styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>JOIN CHAT ROOM</title>
+    <link rel="stylesheet" href="css/styles.css">
 </head>
 
-<body class="chat">
+<body class="centered-form">
+    <div class="centered-form__form">
+        <form action="/chat.html" id="form">
+            <div class="form-field">
+                <h3>Join Chat</h3>
+            </div>
+            <div class="form-field">
+                <label>Display Names</label>
+                <input type="text" name="name" autofocus>
+            </div>
+            <div class="form-field">
+                <label>Room Name</label>
+                <input type="text" name="room" autofocus>
+            </div>
+            <div class="form-field">
+                <button type="submit">Join</button>
+            </div>
 
-  <div class="chat__sidebar">
-    <h3>People</h3>
-    <div id="users"></div>
-  </div>
-
-  <div class="chat__main">
-    <ol id="messages" class="chat__messages"></ol>
-
-    <div class="chat__footer">
-      <form id="message-form">
-        <input name="message" id="message" type="text" placeholder="Message" autofocus autocomplete="off" />
-        <button id="submit-btn">Send</button>
-      </form>
-      <button id="location">Send location</button>
+        </form>
     </div>
-  </div>
-  <script src="/socket.io/socket.io.js"></script>
-  <script type="text/template" id="msg-template">
-        <li class="message">
-            <div class="message__title">
-              <h4>{{from}}</h4>
-              <span>{{createdAt}}</span>
-            </div>
-            <div class="message__body">
-              <p>{{text}}</p>
-            </div>
-          </li>
-  </script>
-  <script type="text/template" id="loc-msg-template">
-        <li class="message">
-            <div class="message__title">
-              <h4>{{from}}</h4>
-              <span>{{createdAt}}</span>
-            </div>
-            <div class="message__body">
-              <a href="{{url}}" target='_blank'> My Location</a>
-            </div>
-          </li>
-  </script>
-  <script type="text/javascript" src="./js/index.js"> </script>
-  <script type="text/javascript" src="./js/libs/moment.js"> </script>
-  <script type="text/javascript" src="./js/libs/mustache.js"> </script>
+    <script>
+            const element = document.querySelector('form');
+            element.addEventListener('submit', event => {
+                event.preventDefault();
+                const formData = new FormData(element);
+                const name = formData.get('name');
+                const room = formData.get('room');
+                if (name.trim() !== "" && room.trim() !== "") {
+                    window.location.href = `/chat.html?name=${name}&room=${room}`;
+                } else {
+                    alert('Invalid Name or Room Name');
+                }
+
+            })
+    </script>
 </body>
 
 </html>
